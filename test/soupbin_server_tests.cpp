@@ -80,7 +80,7 @@ class MySoupBinClient
 };
 
 
-TEST(SoupBinServer, timer)
+TEST(SoupBinServerTests, timer)
 {
     class MyClass : public TimerListener
     {
@@ -113,13 +113,13 @@ TEST(SoupBinServer, timer)
     EXPECT_EQ(myClass.numFires, 1);
 }
 
-TEST(SoupBinServer, ServerStartStop)
+TEST(SoupBinServerTests, ServerStartStop)
 {
     MySoupBinServer server(9012);
     std::this_thread::sleep_for(std::chrono::seconds(2));
 }
 
-TEST(SoupBinServer, OneClient)
+TEST(SoupBinServerTests, OneClient)
 {
     MySoupBinServer server(9012);
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
@@ -135,7 +135,7 @@ TEST(SoupBinServer, OneClient)
     // the client always sends heartbeat requests
 }
 
-TEST(SoupBinServer, ServerReconnect)
+TEST(SoupBinServerTests, ServerReconnect)
 {
     MySoupBinServer server(9012);
     std::this_thread::sleep_for(std::chrono::milliseconds(500));

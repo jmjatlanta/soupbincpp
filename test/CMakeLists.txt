@@ -13,6 +13,7 @@ FetchContent_MakeAvailable(googletest)
 
 add_executable( soupbin_tests
     soupbin_server_tests.cpp
+    soupbin_tests.cpp
     ../src/soup_bin_timer.cpp
     ../src/soup_bin_connection.cpp
 )
