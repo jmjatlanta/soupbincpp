@@ -9,3 +9,9 @@ The library uses Boost ASIO for network connectivity. Heartbeats are set at 1 se
 I believe this to be fairly complete, and am using it in simulation projects. 
 
 Try it out, and feel free to add PRs, issues, etc. Enjoy!
+
+See [NASDAQ protocol documentation](https://www.nasdaq.com/docs/SoupBinTCP%204.0.pdf)
+
+ToDo:
+- reset timer on send (code is there, just need to implement and test)
+- more tests
