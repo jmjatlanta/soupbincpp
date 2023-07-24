@@ -14,4 +14,5 @@ See [NASDAQ protocol documentation](https://www.nasdaq.com/docs/SoupBinTCP%204.0
 
 ToDo:
 - reset timer on send (code is there, just need to implement and test)
+- disconnect on lack of heartbeat (perhaps just before send?)
 - more tests
