@@ -11,6 +11,8 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(googletest)
 
+find_package(Boost 1.83 REQUIRED asio)
+
 add_executable( soupbin_tests
     soupbin_server_tests.cpp
     soupbin_tests.cpp
@@ -20,9 +22,11 @@ add_executable( soupbin_tests
 
 target_include_directories(soupbin_tests PRIVATE 
     ../src
+    ${BOOST_LIBRARY_INCLUDES}
 )
 
 target_link_libraries(soupbin_tests 
+    Boost::asio
     GTest::gtest
     GTest::gtest_main
 )
