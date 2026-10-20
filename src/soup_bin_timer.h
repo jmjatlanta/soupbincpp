@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <thread>
 #include <condition_variable>
+#include <mutex>
 
 class TimerListener
 {

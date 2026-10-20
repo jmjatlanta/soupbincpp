@@ -16,7 +16,7 @@ FetchContent_MakeAvailable(googletest)
 
 enable_testing()
 
-find_package(Boost 1.83 REQUIRED asio)
+find_package(Boost CONFIG)
 
 add_executable( soupbin_tests
     soupbin_server_tests.cpp
@@ -31,7 +31,6 @@ target_include_directories(soupbin_tests PRIVATE
 )
 
 target_link_libraries(soupbin_tests 
-    Boost::asio
     GTest::gtest
     GTest::gtest_main
 )
