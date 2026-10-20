@@ -17,7 +17,7 @@ class MessageRepeater
 };
 
 /***
- * Represents a connected client
+ * Represents a connected client or server
 */
 class SoupBinConnection : public TimerListener
 {
@@ -30,26 +30,58 @@ class SoupBinConnection : public TimerListener
     };
 
     /***
-     * A connection to a server from a client
+     * Create connection to a server from a client
+     * @param url the URL to connect to
+     * @param username the account to connect as
+     * @param password the credentials
+     * @param sessionId the session ID to use
+     * @param nextSequenceNo The next sequence number (for servers that support replay of sequenced messages)
      */
     SoupBinConnection(const std::string& url, const std::string& username, const std::string& password,
             const std::string& sessionId = "", uint64_t nextSequenceNo = 0);
     /***
      * A connection from a client (this ctor used by a server
+     * @param skt the socket of the connection
+     * @param parent the parent that implements the MessageRepeater interface
      */
     SoupBinConnection(boost::asio::ip::tcp::socket skt, MessageRepeater* parent);
+
     ~SoupBinConnection();
 
     /***
      * Stores message for repeats, plus sends it
+     * @param seqNo the sequence number
+     * @param bytes the data
     */
     virtual void send_sequenced(uint64_t seqNo, const std::vector<unsigned char>& bytes);
+
+    /****
+     * send a message, use the next sequence number
+     * @param bytes the message
+    */
     virtual void send_sequenced(const std::vector<unsigned char>& bytes);
+
+    /*****
+     * @brief send an unsequenced message
+     * @param bytes the message
+    */
     void send_unsequenced(const std::vector<unsigned char>& bytes);
+
+    /***
+     * @param increment TRUE if the number should be incremented due to this call
+     * @returns the next sequence number
+    */
     uint64_t get_next_seq(bool increment = true);
+
+    /*****
+     * @returns the session id for this object
+    */
     std::string get_session_id() { return sessionId; }
 
-    // TimerListener implementation
+    /****
+     * @brief Called when a timer expires
+     * @param msSince timer milliseconds since the start of the timer
+    */
     virtual void OnTimer(uint64_t msSince) override;
 
     public:

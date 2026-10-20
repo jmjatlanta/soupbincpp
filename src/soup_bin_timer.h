@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
 #include <thread>
+#include <condition_variable>
 
 class TimerListener
 {
@@ -29,5 +30,7 @@ class Timer
     TimerListener* listener; // the callback
     std::thread timerThread; // waits and fires the callback
     bool shuttingDown = false; // shuts down the thread on dtor
+    std::mutex cv_mutex; // a mutex so we can control the condition variable
+    std::condition_variable cv; // speeds shutdown
 };
 

@@ -2,15 +2,19 @@
 #include <chrono>
 
 Timer::Timer(TimerListener* listener, uint64_t msBeforeFire, uint64_t currentTimeMs) 
-        : listener(listener), msBeforeFire(msBeforeFire), lastTimeMs(currentTimeMs)
+        : listener(listener), msBeforeFire(msBeforeFire), lastTimeMs(currentTimeMs),
+        shuttingDown(false)
 {
-    shuttingDown = false;
     timerThread = std::thread(&Timer::run, this);
 }
 
 Timer::~Timer()
 {
-    shuttingDown = true;
+    {
+        std::scoped_lock lock(cv_mutex);
+        shuttingDown = true;
+    }
+    cv.notify_all();
     if (timerThread.joinable())
         timerThread.join();
 }
@@ -51,10 +55,12 @@ void Timer::wait_until(uint64_t specificTime)
 {
     // get current time
     uint64_t now = Timer::get_time();
+    std::unique_lock<std::mutex> lock(cv_mutex);
     if (now <= specificTime)
     {
         int64_t waitMs = specificTime - now;
-        std::this_thread::sleep_for(std::chrono::milliseconds(waitMs));
+        // wait for waitMS or until notify is called
+        cv.wait_for(lock, std::chrono::milliseconds(waitMs));
     }
 }
 

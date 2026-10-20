@@ -32,6 +32,7 @@ class MyConnection : public SoupBinConnection
     uint32_t numServerHeartbeats = 0;
     std::unordered_map<uint64_t, std::vector<unsigned char>> messages;
 };
+
 class MySoupBinServer : public SoupBinServer<MyConnection>
 {
     public:
